@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Eco Tracker - Johor</title>
+    <link rel="stylesheet" href="assets/css/style.css">
+    <style>
+        /* Weather Box and Image Container */
+        .container {
+            display: flex;
+            justify-content: space-between; /* Align content to both sides */
+            align-items: center;
+            gap: 30px; /* Gap between elements */
+            margin-top: 50px;
+        }
+
+        .weather-box {
+            background-color: rgba(0, 0, 0, 0.7); /* Semi-transparent box */
+            padding: 20px;
+            border-radius: 10px;
+            width: 300px;
+            color: white;
+            font-size: 16px;
+            text-align: center; /* Center text inside box */
+            margin-top: -140px;
+
+        }
+
+        /* Styling for the images */
+        .api-image, .hm-image {
+            height: 300px;
+            max-width: 278px; /* Control image size */
+            border-radius: 10px;
+        }
+
+        h1 {
+            font-size: 1.8em; /* Set h1 font size to 3em */
+            
+        }
+        .hero h1{
+            padding-bottom: 30px;
+
+        }
+        .hero p{
+            padding-bottom: 0px;
+        }
+    </style>
+</head>
+<body>
+    <!-- Header Section -->
+    <header>
+        <div class="logo">
+            <h1>Eco Tracker</h1>
+        </div>
+        <nav>
+            <ul>
+                <li><a href="index.html">Home</a></li>
+                <li><a href="about.html">About Us</a></li>
+                <li><a href="environment.html">Environment Monitor</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <!-- Content Section -->
+    <section class="hero">
+        <div class="hero-content">
+            <h1>Real-Time Environmental Data for Johor</h1>
+            <div class="container">
+                <!-- First image (left side) -->
+                <img src="assets/images/api.jpg" alt="Air Quality Info" class="api-image">
+
+                <!-- Weather data box -->
+                <div class="weather-box">
+                    <p id="air-quality">Air Quality: Loading...</p>
+                    <p id="temperature">Temperature: Loading...</p>
+                    <p id="humidity">Humidity: Loading...</p>
+                </div>
+
+                <!-- Second image (right side) -->
+                <img src="assets/images/hm.jpg" alt="Humidity Info" class="hm-image">
+            </div>
+        </div>
+    </section>
+
+    <!-- Script for Fetching Data -->
+    <script>
+        const apiKey = '94d013360d784087a2e1edd7011a334e';
+
+        const lat = 1.4927; // Johor latitude
+        const lon = 103.7414; // Johor longitude
+
+        // Fetch weather and AQI data for Johor
+        fetch(`https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&appid=${apiKey}&units=metric`)
+            .then(response => response.json())
+            .then(data => {
+                document.getElementById('temperature').textContent = `Temperature: ${data.main.temp} °C`;
+                document.getElementById('humidity').textContent = `Humidity: ${data.main.humidity} %`;
+                fetch(`https://api.openweathermap.org/data/2.5/air_pollution?lat=${lat}&lon=${lon}&appid=${apiKey}`)
+                    .then(response => response.json())
+                    .then(aqiData => {
+                        document.getElementById('air-quality').textContent = `Air Quality: ${aqiData.list[0].main.aqi}`;
+                    });
+            });
+    </script>
+</body>
+</html>

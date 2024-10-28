@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Eco Tracker - Carbon Footprint</title>
+    <link rel="stylesheet" href="assets/css/style.css">
+    <style>
+        /* Styling for the Form */
+        .carbon-footprint-container {
+            width: 70%;
+            margin: 40px auto;
+            margin-top: 120px;
+            padding: 20px;
+            background-color: white;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        }
+
+        .carbon-footprint-header {
+            text-align: center;
+            font-size: 24px;
+            color: #333;
+            margin-bottom: 30px;
+        }
+
+        .carbon-footprint-container p {
+            text-align: center;
+            color: #666;
+            font-size: 16px;
+            margin-bottom: 20px;
+        }
+
+        .form-group {
+            margin-bottom: 1em;
+        }
+
+        label {
+            display: block;
+            font-weight: bold;
+            margin-bottom: 0.5em;
+            color: #333;
+        }
+
+        input[type="number"], select {
+            width: 97.2%;
+            padding: 12px;
+            font-size: 16px;
+            border: 2px solid #e50975;
+            border-radius: 5px;
+            margin-top: 5px;
+        }
+
+        select {
+            width: 99.7%; /* Full width */
+            padding: 12px;
+            font-size: 16px;
+            border: 2px solid #e50975;
+            border-radius: 5px;
+            background-color: white;
+            color: #333;
+        }
+
+
+        .calculate-btn {
+            display: block;
+            width: 100%;
+            padding: 12px;
+            font-size: 18px;
+            background-color: #e50975;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            margin-top: 10px;
+            transition: background-color 0.3s;
+        }
+
+        .calculate-btn:hover {
+            background-color: darkred;
+        }
+
+        .result-display {
+            margin-top: 20px;
+            padding: 20px;
+            background-color: #e0f7fa;
+            border-radius: 5px;
+            font-size: 18px;
+            color: #333;
+            display: none;
+            text-align: center;
+        }
+
+        .progress-bar {
+            height: 20px;
+            width: 100%;
+            background-color: #ddd;
+            border-radius: 5px;
+            margin-top: 10px;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background-color: #e50975;
+            width: 0;
+            transition: width 0.4s;
+        }
+    </style>
+</head>
+<body>
+
+<!-- Header Section -->
+<header>
+    <div class="logo">
+        <h1>Eco Tracker</h1>
+    </div>
+    <nav>
+        <ul>
+            <li><a href="index.html">Home</a></li>
+            <li><a href="about.html">About Us</a></li>
+            <li><a href="environment.html">Environment Monitor</a></li>
+        </ul>
+    </nav>
+</header>
+
+<!-- Carbon Footprint Section -->
+<section class="carbon-footprint-container">
+    <h2 class="carbon-footprint-header">Calculate Your Carbon Footprint</h2>
+
+    <form id="carbonFootprintForm">
+        <div class="form-group">
+            <label for="transport">Transportation (km per week)</label>
+            <input type="number" id="transport" placeholder="e.g., 50" min="0">
+        </div>
+        <div class="form-group">
+            <label for="energy">Energy Usage (kWh per month)</label>
+            <input type="number" id="energy" placeholder="e.g., 200" min="0">
+        </div>
+        <div class="form-group">
+            <label for="diet">Diet</label>
+            <select id="diet">
+                <option value="0.8">Vegan</option>
+                <option value="1.0">Vegetarian</option>
+                <option value="1.5">Omnivore</option>
+                <option value="2.0">High Meat Consumption</option>
+            </select>
+        </div>
+        <div class="form-group">
+            <label for="waste">Waste Produced (kg per month)</label>
+            <input type="number" id="waste" placeholder="e.g., 10" min="0">
+        </div>
+
+        <button type="button" class="calculate-btn" onclick="calculateFootprint()">Calculate Footprint</button>
+    </form>
+
+    <div class="result-display" id="resultDisplay">
+        <p id="resultText"></p>
+        <div class="progress-bar">
+            <div class="progress-fill" id="progressFill"></div>
+        </div>
+    </div>
+</section>
+
+<script>
+    // JavaScript function to calculate carbon footprint
+    function calculateFootprint() {
+        const transport = parseFloat(document.getElementById("transport").value) || 0;
+        const energy = parseFloat(document.getElementById("energy").value) || 0;
+        const diet = parseFloat(document.getElementById("diet").value);
+        const waste = parseFloat(document.getElementById("waste").value) || 0;
+
+        // Basic estimation formula for demonstration
+        const footprint = (transport * 0.12) + (energy * 0.5) + (waste * 0.2) + diet * 100;
+
+        // Display result
+        const resultDisplay = document.getElementById("resultDisplay");
+        resultDisplay.style.display = "block";
+
+        const resultText = document.getElementById("resultText");
+        resultText.textContent = `Your estimated monthly carbon footprint is ${footprint.toFixed(2)} kg CO₂e.`;
+
+        // Update progress bar
+        const progressFill = document.getElementById("progressFill");
+        const maxFootprint = 1000; // Max for visualization
+        const widthPercentage = Math.min((footprint / maxFootprint) * 100, 100);
+        progressFill.style.width = widthPercentage + "%";
+    }
+</script>
+
+</body>
+</html>

@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Eco Tracker - Waste Reduction Guide</title>
+    <link rel="stylesheet" href="assets/css/style.css">
+    <style>
+        /* Progress Bar Styling */
+        .progress-container {
+            width: 80%;
+            margin: 20px auto;
+            background-color: #ddd;
+            border-radius: 5px;
+            overflow: hidden;
+            height: 25px;
+            position: relative;
+        }
+
+        .progress-bar {
+            height: 100%;
+            background-color: #e50975;
+            width: 0%; /* Start empty */
+            transition: width 0.4s ease;
+        }
+
+        /* Collapsible Accordion Section */
+        .accordion-container {
+            display: flex;
+            justify-content: space-between; /* Ensure fixed position */
+            gap: 10px;
+            margin-top: 20px;
+            text-align: center;
+        }
+
+        .accordion {
+            background-color: #1a0029;
+            color: white;
+            cursor: pointer;
+            padding: 15px;
+            border: none;
+            text-align: center;
+            font-size: 18px;
+            transition: background-color 0.3s ease;
+            border-radius: 5px;
+            flex-grow: 1;
+        }
+
+        .accordion:hover {
+            background-color: #333;
+        }
+
+        .tip-content {
+            display: none;
+            overflow: hidden;
+            padding: 10px;
+            margin-top: 10px;
+            border-radius: 5px;
+            font-size: 25px;
+            color: white;
+        }
+
+        /* Tip Content Section */
+        .tips-container {
+            margin-top: 20px;
+        }
+
+        /* Image Styling */
+        #step-image {
+            display: none;
+            width: 600px;
+            height: 313.8px;
+            margin: 20px auto; /* Centers the image horizontally */
+            margin-top: 20px; /* Add space at the top */
+        }
+
+    </style>
+</head>
+<body>
+
+<!-- Header Section -->
+<header>
+    <div class="logo">
+        <h1>Eco Tracker</h1>
+    </div>
+    <nav>
+        <ul>
+            <li><a href="index.html">Home</a></li>
+            <li><a href="about.html">About Us</a></li>
+            <li><a href="environment.html">Environment Monitor</a></li>
+        </ul>
+    </nav>
+</header>
+
+<!-- Waste Reduction Guide Section -->
+<section class="hero">
+    <div class="hero-content">
+        <h1>Waste Reduction Guide</h1>
+
+        <!-- Progress Bar -->
+        <div class="progress-container">
+            <div class="progress-bar" id="progress-bar"></div>
+        </div>
+
+        <!-- Accordion Steps -->
+        <div class="accordion-container">
+            <button class="accordion" data-step="1">Step 1: Reduce ♻️</button>
+            <button class="accordion" data-step="2">Step 2: Reuse ♻️</button>
+            <button class="accordion" data-step="3">Step 3: Recycle ♻️</button>
+            <button class="accordion" data-step="4">Step 4: Compost 🌱</button>
+            <button class="accordion" data-step="5">Step 5: Responsible Disposal 🗑️</button>
+        </div>
+
+        <!-- Tips Section -->
+        <div class="tips-container">
+            <div class="tip-content" id="tip-content">Select a step to view tips.</div>
+            <img id="step-image" src="" alt="Step Image">
+        </div>
+    </div>
+</section>
+
+<script>
+    const steps = document.querySelectorAll(".accordion");
+    const progressBar = document.getElementById("progress-bar");
+    const tipContent = document.getElementById("tip-content");
+    const stepImage = document.getElementById("step-image");
+
+    const tips = [
+        {text: "Focus on reducing your waste by opting for reusable items over single-use products.", image: "assets/images/step1.jpg"},
+        {text: "Find ways to reuse items before disposing of them. For example, turn glass jars into storage containers.", image: "assets/images/step2.jpg"},
+        {text: "Separate recyclables like paper, plastic, and metal, and make sure to follow your local recycling guidelines.", image: "assets/images/step3.jpg"},
+        {text: "Start composting your organic waste to reduce landfill waste and produce nutrient-rich soil.", image: "assets/images/step4.jpg"},
+        {text: "Dispose of hazardous materials, electronics, and chemicals responsibly by using proper waste disposal services.", image: "assets/images/step5.jpg"}
+    ];
+
+    steps.forEach((step, index) => {
+        step.addEventListener("click", function() {
+            // Display content
+            tipContent.textContent = tips[index].text;
+            stepImage.src = tips[index].image;
+            tipContent.style.display = 'block';
+            stepImage.style.display = 'block';
+
+            // Update progress
+            progressBar.style.width = `${((index + 1) / steps.length) * 100}%`;
+        });
+    });
+</script>
+
+</body>
+</html>

@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Eco Tracker - Energy Tips</title>
+    <link rel="stylesheet" href="assets/css/style.css">
+    <style>
+        /* Accordion Styling */
+        .accordion-container {
+            margin: 40px 20px;
+        }
+
+        .accordion {
+            background-color: #1a0029;
+            color: white;
+            cursor: pointer;
+            padding: 18px;
+            width: 100%;
+            text-align: left;
+            border: none;
+            outline: none;
+            font-size: 18px;
+            margin-bottom: 10px;
+            border-radius: 5px;
+            transition: background-color 0.3s ease;
+        }
+
+        .accordion:hover {
+            background-color: #333;
+        }
+
+        .accordion-content {
+            display: none;
+            padding: 15px;
+            background-color: #444;
+            color: white;
+            border-radius: 5px;
+        }
+
+        /* Tip of the Day Card */
+        .tip-of-day-card {
+            background-color: lightgreen;
+            color: white;
+            padding: 10px;
+            border-radius: 10px;
+            text-align: center;
+            width: 40%;
+            margin: 20px auto;
+            margin-top: 120px;
+        }
+
+        /* Call to Action */
+        .call-to-action {
+            background-color: #e50975;
+            color: white;
+            padding: 15px;
+            text-align: center;
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            z-index: 1000;
+        }
+
+        /* For page content spacing, to avoid overlap with the call-to-action */
+        .page-content {
+            padding-bottom: 80px; /* Ensure there's enough space above the fixed footer */
+        }
+    </style>
+</head>
+<body>
+
+<!-- Header Section -->
+<header>
+    <div class="logo">
+        <h1>Eco Tracker</h1>
+    </div>
+    <nav>
+        <ul>
+            <li><a href="index.html">Home</a></li>
+            <li><a href="about.html">About Us</a></li>
+            <li><a href="environment.html">Environment Monitor</a></li>
+        </ul>
+    </nav>
+</header>
+
+<!-- Page Content with Tip of the Day and Accordion Tips -->
+<section class="page-content">
+
+    <!-- Tip of the Day Card -->
+    <div class="tip-of-day-card" id="tip-of-day">
+        <h2>Tip of the Day 🌞</h2>
+        <p id="daily-tip">Turn off your electronics when they’re not in use to save energy.</p>
+    </div>
+
+    <!-- Accordion for Energy Tips -->
+    <div class="accordion-container">
+        <button class="accordion">Lighting 💡</button>
+        <div class="accordion-content">
+            <p>Switch to energy-efficient LED bulbs. They last longer and use up to 80% less energy than traditional bulbs.</p>
+        </div>
+
+        <button class="accordion">Heating and Cooling 🌡️</button>
+        <div class="accordion-content">
+            <p>Set your thermostat a few degrees lower in winter and a few degrees higher in summer to save energy.</p>
+        </div>
+
+        <button class="accordion">Appliances ⚡</button>
+        <div class="accordion-content">
+            <p>Use energy-efficient appliances and always fully load your washing machine or dishwasher to minimize energy usage.</p>
+        </div>
+
+        <button class="accordion">Water Usage 💧</button>
+        <div class="accordion-content">
+            <p>Turn off the tap while brushing your teeth and reduce shower times to conserve water and energy.</p>
+        </div>
+
+        <button class="accordion">Renewable Energy 🌿</button>
+        <div class="accordion-content">
+            <p>Consider installing solar panels to generate renewable energy for your home and reduce your carbon footprint.</p>
+        </div>
+    </div>
+
+</section>
+
+<!-- Call to Action, Fixed at the Bottom -->
+<div class="call-to-action">
+    <p>Contribute to a greener tomorrow by sharing your energy-saving tips!</p>
+</div>
+
+<!-- JavaScript for Accordion and Random Tips -->
+<script>
+    const accordions = document.querySelectorAll('.accordion');
+
+    accordions.forEach(accordion => {
+        accordion.addEventListener('click', function () {
+            accordions.forEach(acc => {
+                // Close all other accordions except the clicked one
+                if (acc !== this) {
+                    acc.classList.remove('active');
+                    acc.nextElementSibling.style.display = 'none';
+                }
+            });
+
+            // Toggle the clicked accordion
+            this.classList.toggle('active');
+            const content = this.nextElementSibling;
+            if (content.style.display === 'block') {
+                content.style.display = 'none';
+            } else {
+                content.style.display = 'block';
+            }
+        });
+    });
+
+    // Random daily tip logic
+    const tips = [
+        "Turn off your electronics when they’re not in use to save energy.",
+        "Unplug chargers when not in use to reduce 'vampire' energy drain.",
+        "Use natural light during the day to reduce energy consumption.",
+        "Insulate your home to keep it warm in winter and cool in summer.",
+        "Wash clothes with cold water to save energy and reduce emissions."
+    ];
+
+    function showDailyTip() {
+        const tipElement = document.getElementById('daily-tip');
+        const randomTip = tips[Math.floor(Math.random() * tips.length)];
+        tipElement.textContent = randomTip;
+    }
+
+    // Display a new tip when the page loads
+    window.onload = showDailyTip;
+</script>
+
+</body>
+</html>

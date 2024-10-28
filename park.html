@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Eco Tracker - Park Locator</title>
+    <link rel="stylesheet" href="assets/css/style.css">
+    <style>
+        /* Styling for the Map */
+        #map {
+            height: 500px;
+            width: 70%;
+            margin: 20px auto;
+            border-radius: 10px;
+            border: 2px solid #e50975;
+        }
+
+        /* Search Bar Styling */
+        .search-bar {
+            width: 80%;
+            margin: 10px auto;
+            display: flex;
+            justify-content: center;
+            margin-top: 120px;
+        }
+
+        .search-bar input {
+            padding: 10px;
+            width: 70%;
+            font-size: 16px;
+            border: 2px solid #e50975;
+            border-radius: 5px;
+        }
+
+        .search-bar button {
+            padding: 10px 20px;
+            background-color: #e50975;
+            color: white;
+            border: none;
+            font-size: 16px;
+            margin-left: 10px;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        .search-bar button:hover {
+            background-color: darkred;
+        }
+
+        /* Park Cards */
+        .park-card {
+            background-color: white;
+            color: black;
+            padding: 20px;
+            border-radius: 10px;
+            margin: 20px auto;
+            width: 80%;
+            max-width: 900px; /* Set max width for alignment */
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .park-card img {
+            max-width: 300px;
+            border-radius: 5px;
+        }
+
+        .park-card h3 {
+            margin: 0;
+        }
+
+        .park-card p {
+            margin: 5px 0;
+        }
+
+        .park-card button {
+            background-color: lightgreen;
+            color: white;
+            padding: 10px;
+            border-radius: 5px;
+            border: none;
+            cursor: pointer;
+        }
+
+        .park-card button:hover {
+            background-color: darkgreen;
+        }
+    </style>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
+</head>
+<body>
+
+<!-- Header Section -->
+<header>
+    <div class="logo">
+        <h1>Eco Tracker</h1>
+    </div>
+    <nav>
+        <ul>
+            <li><a href="index.html">Home</a></li>
+            <li><a href="about.html">About Us</a></li>
+            <li><a href="environment.html">Environment Monitor</a></li>
+        </ul>
+    </nav>
+</header>
+
+<!-- Park Locator Section -->
+<section class="park-locator">
+    <!-- Search Bar -->
+    <div class="search-bar">
+        <input type="text" id="location-input" placeholder="Enter a location in Malaysia...">
+        <button id="search-btn">Search</button>
+        <button id="directions-btn">Get Directions</button> <!-- New button added -->
+    </div>
+
+    <!-- Map -->
+    <div id="map"></div>
+
+    <!-- Park Cards for Kuala Lumpur -->
+    <div class="park-card">
+        <img src="assets/images/klcc_park.jpg" alt="KLCC Park Image">
+        <div>
+            <h3>KLCC Park</h3>
+            <p>Amenities: Jogging Track, Children's Playground</p>
+        </div>
+        <button onclick="window.open('https://www.google.com/maps/dir/?api=1&destination=KLCC+Park&travelmode=driving', '_blank')">Get Directions</button>
+    </div>
+
+    <div class="park-card">
+        <img src="assets/images/titi.jpg" alt="Taman Tasik Titiwangsa Park Image">
+        <div>
+            <h3>Taman Tasik Titiwangsa</h3>
+            <p>Amenities: Boat Rides, Jogging Track, Skate Park</p>
+        </div>
+        <button onclick="window.open('https://www.google.com/maps/dir/?api=1&destination=Taman+Tasik+Titiwangsa&travelmode=driving', '_blank')">Get Directions</button>
+    </div>
+</section>
+
+<!-- Leaflet.js Script for Map Integration -->
+<script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+<script>
+    // Initialize the map
+    var map = L.map('map').setView([3.139, 101.6869], 12); // Kuala Lumpur's coordinates
+
+    // Add OpenStreetMap tiles
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        attribution: '&copy; OpenStreetMap contributors'
+    }).addTo(map);
+
+    // Function to search location using OpenStreetMap Nominatim API
+    document.getElementById('search-btn').addEventListener('click', function() {
+        var location = document.getElementById('location-input').value;
+        fetch(`https://nominatim.openstreetmap.org/search?q=${location}&countrycodes=MY&format=json&limit=1`)
+            .then(response => response.json())
+            .then(data => {
+                if (data.length > 0) {
+                    var lat = data[0].lat;
+                    var lon = data[0].lon;
+                    map.setView([lat, lon], 13); // Zoom to the searched location
+
+                    // Add a marker for the searched location
+                    var marker = L.marker([lat, lon]).addTo(map)
+                        .bindPopup(`${location}`)
+                        .openPopup();
+                } else {
+                    alert('Location not found in Malaysia.');
+                }
+            })
+            .catch(err => {
+                console.error(err);
+                alert('An error occurred while searching for the location.');
+            });
+    });
+
+    // New Function for Directions Button
+    document.getElementById('directions-btn').addEventListener('click', function() {
+        var location = document.getElementById('location-input').value;
+        if (location) {
+            window.open(`https://www.google.com/maps/dir/?api=1&destination=${encodeURIComponent(location)}&travelmode=driving`, '_blank');
+        } else {
+            alert('Please enter a location.');
+        }
+    });
+</script>
+
+</body>
+</html>
